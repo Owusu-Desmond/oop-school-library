@@ -4,6 +4,7 @@ class Person < Nameable
   attr_reader :name, :age
 
   def initialize(age, name)
+    super()
     @age = age
     @name = name
   end
