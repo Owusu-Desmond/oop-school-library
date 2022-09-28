@@ -1,11 +1,6 @@
-require_relative 'nameable'
+require_relative 'base_decorator'
 
-class TrimmerDecorator < Nameable
-  def initialize(nameable)
-    super()
-    @nameable = nameable
-  end
-
+class TrimmerDecorator < BaseDecorator
   def correct_name
     @nameable.correct_name[0..9]
   end
