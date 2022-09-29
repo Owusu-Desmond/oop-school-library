@@ -7,9 +7,14 @@ class Person < Nameable
     super()
     @age = age
     @name = name
+    @rental = []
   end
 
   def correct_name
     @name
+  end
+
+  def add_rental(rental)
+    @rental << rental
   end
 end
