@@ -7,7 +7,7 @@ class Person < Nameable
     super()
     @age = age
     @name = name
-    @rental = []
+    @rentals = []
   end
 
   def correct_name
@@ -15,6 +15,6 @@ class Person < Nameable
   end
 
   def add_rental(rental)
-    @rental << rental
+    @rentals << rental
   end
 end
