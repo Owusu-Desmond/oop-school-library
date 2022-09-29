@@ -1,10 +1,11 @@
 require_relative 'nameable'
 
 class Person < Nameable
-  attr_reader :name, :age
+  attr_reader :name, :age, :id
 
   def initialize(age, name)
     super()
+    @id = rand(100..999)
     @age = age
     @name = name
     @rentals = []
