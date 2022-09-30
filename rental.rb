@@ -6,8 +6,6 @@ class Rental
     @book = book
     @person = person
     # Add the rental to the book and person
-    puts @book
-    puts @person
     @book.add_rental(self)
     @person.add_rental(self)
   end
