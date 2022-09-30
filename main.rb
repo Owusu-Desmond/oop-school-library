@@ -1,10 +1,43 @@
-require_relative 'person'
-require_relative 'trimmer_decorator'
-require_relative 'capitalize_decorator'
+require_relative 'app'
 
-person = Person.new(22, 'maximilianus')
-p person.correct_name
-capitalized_person = CapitalizeDecorator.new(person)
-p capitalized_person.correct_name
-capitalized_trimmed_person = TrimmerDecorator.new(capitalized_person)
-p capitalized_trimmed_person.correct_name
+APP = App.new
+
+class Main
+  def menu_message
+    puts '____________________________________________________________'
+    puts 'Please choose an option by entering a number:'
+    puts '1 - List all books'
+    puts '2 - List all people'
+    puts '3 - Create a person'
+    puts '4 - Create a book'
+    puts '5 - Create a rental'
+    puts '6 - List all rentals for a given person id'
+    puts '7 - Exit'
+  end
+
+  def display_menu # rubocop:disable Metrics/CyclomaticComplexity
+    menu_message
+    option = gets.chomp.to_i
+    case option
+    when 1
+      APP.list_books
+    when 2
+      APP.list_people
+    when 3
+      APP.create_person
+    when 4
+      APP.create_book
+    when 5
+      APP.create_rental
+    when 6
+      APP.list_rentals_by_person_id
+    when 7
+      puts 'Thank you for using this app!'
+      exit
+    else puts 'Invalid option' end
+    display_menu
+  end
+end
+
+main = Main.new
+main.display_menu
