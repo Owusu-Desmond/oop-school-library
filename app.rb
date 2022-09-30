@@ -27,8 +27,12 @@ class App
     if @people.empty?
       puts 'No people found'
     else
-      puts '|_________________________All people:_________________________|'
-      @people.each { |person| puts "| Name: #{person.name}, ID: #{person.id}, Age: #{person.age}" }
+      # display students
+      puts '|_________________________All People_________________________|'
+      @people.each do |person|
+        puts "[Student] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}" if person.is_a? Student
+        puts "[Teacher] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}" if person.is_a? Teacher
+      end
     end
   end
 
@@ -46,11 +50,11 @@ class App
   end
 
   def create_teacher
-    puts 'Age: '
+    print 'Age: '
     age = gets.chomp.to_i
-    puts 'Name: '
+    print 'Name: '
     name = gets.chomp.strip
-    puts 'Specialization: '
+    print 'Specialization: '
     specialization = gets.chomp.strip
     @people << Teacher.new(age, specialization, name)
     puts 'Teacher created successfully'
@@ -80,39 +84,68 @@ class App
     puts 'Book created successfully'
   end
 
-  def create_rental
-    print 'ID of person: '
-    person_id = gets.chomp.to_i
-    print 'Title of book: '
-    book_title = gets.chomp
-    puts 'Input date e.g. 2021-01-01'
-    print 'Date: '
-    date = gets.chomp.match?(/\d{4}-\d{2}-\d{2}/)
-    unless date
-      puts 'Sorry, You input invalid date'
-      create_rental
-      return
-    end
-    book = @books.find { |b| b.title == book_title }
-    person = @people.find { |psn| psn.id == person_id }
-    if book && person
-      @rentals << Rental.new(date, book, person)
-      puts 'Rental created successfully'
-    else
-      puts 'Sorry, ID or Title not found'
+  def list_rentals_by_book_id
+    puts 'Select a book from the following list by number'
+    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title}, Author: #{book.author}" }
+  end
+
+  def list_rentals_for_person
+    puts 'Select a person from the following list by number (not id)'
+    @people.each_with_index do |person, index|
+      puts "#{index}) [#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
     end
   end
 
+  def check_if_books_and_people_exist
+    if @books.empty?
+      puts 'No books found'
+      return false
+    elsif @people.empty?
+      puts 'No people found'
+      return false
+    end
+    true
+  end
+
+  def create_rental
+    if check_if_books_and_people_exist
+      begin
+        list_rentals_by_book_id
+        book_index = gets.chomp.to_i
+        puts # empty line
+        list_rentals_for_person
+        person_index = gets.chomp.to_i
+      rescue StandardError
+        puts 'Invalid input, please try again'
+        retry # retry the begin block
+      end
+      puts # empty line
+      puts 'Input date e.g. 2021-01-01'
+      print 'Date: '
+      date = gets.chomp
+      puts 'Sorry, You input invalid date' unless date.match?(/\d{4}-\d{2}-\d{2}/)
+      @rentals << Rental.new(date, @books[book_index], @people[person_index])
+      puts 'Rental created successfully'
+    else
+      puts 'Cannot create rental because there are no books or people in the app' end
+  end
+
   def list_rentals_by_person_id
+    puts # empty line
     print 'ID of person: '
     person_id = gets.chomp.to_i
-    puts '|_________________________Rentals:_________________________|'
-    @rentals.each do |rental|
-      if rental.person.id == person_id
-        puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
-      else
-        puts 'No rentals found'
+
+    is_id_exist = @people.any? { |person| person.id == person_id }
+    if is_id_exist
+      puts # empty line
+      puts "|____________All rentals of person(id: #{person_id})____________|"
+      @rentals.each do |rental|
+        if rental.person.id == person_id
+          puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+        end
       end
+    else
+      puts 'ID not found'
     end
   end
 end
