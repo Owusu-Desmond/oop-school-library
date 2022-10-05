@@ -17,6 +17,12 @@ class Main
     puts '7 - Exit'
   end
 
+  def store_data
+    STORE.store_books(APP.books)
+    STORE.store_people(APP.people)
+    STORE.store_rentals(APP.rentals)
+  end
+
   def display_menu # rubocop:disable Metrics/CyclomaticComplexity
     menu_message
     option = gets.chomp.to_i
@@ -34,10 +40,7 @@ class Main
     when 6
       APP.list_rentals_by_person_id
     when 7
-      STORE.store_books(APP.books)
-      STORE.store_people(APP.people)
-      STORE.store_rentals(APP.rentals)
-      puts 'Thank you for using this app!'
+      store_data
       exit
     else puts 'Invalid option' end
     display_menu
