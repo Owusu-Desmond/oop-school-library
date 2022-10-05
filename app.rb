@@ -29,9 +29,13 @@ class App
     @books = Data.new.books.map { |book| Book.new(book['title'], book['author'], book['rentals']) }
     @people = Data.new.people.map do |peo|
       if peo.is_a?(Teacher)
-        Teacher.new(peo['age'], peo['specialization'], peo['name'])
+        teacher = Teacher.new(peo['age'], peo['specialization'], peo['name'])
+        teacher.id = peo['id']
+        teacher
       else
-        Student.new(peo['age'], peo['classroom'], peo['name'])
+        student = Student.new(peo['age'], peo['classroom'], peo['name'])
+        student.id = peo['id']
+        student
       end
     end
     @rentals = Data.new.rentals.each_with_index.map do |rental, index|
