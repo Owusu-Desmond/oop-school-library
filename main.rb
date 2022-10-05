@@ -1,6 +1,8 @@
 require_relative 'app'
+require_relative 'store/store'
 
 APP = App.new
+STORE = Store.new
 
 class Main
   def menu_message
@@ -32,6 +34,9 @@ class Main
     when 6
       APP.list_rentals_by_person_id
     when 7
+      STORE.store_books(APP.books)
+      STORE.store_people(APP.people)
+      STORE.store_rentals(APP.rentals)
       puts 'Thank you for using this app!'
       exit
     else puts 'Invalid option' end
