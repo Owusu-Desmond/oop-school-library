@@ -1,6 +1,6 @@
 require_relative '../person'
 describe Person do
-  let(:person) { Person.new(20, 'John' ) } 
+  let(:person) { Person.new(20, 'John') }
 
   describe '#new' do
     it 'creates a new person' do
