@@ -3,11 +3,11 @@ require_relative '../student'
 describe Student do
   # the let method is used to create a variable that can be used in the tests
   let(:student) do
-    Student.new(name: 'John', age: 18, classroom: 'Classroom A')
+    Student.new(18, 'Classroom A', 'John')
   end
   describe '#new' do
     it 'creates a new student' do
-      expect(student).to be_a(Student) // 
+      expect(student).to be_a(Student)
     end
 
     it 'has a name' do

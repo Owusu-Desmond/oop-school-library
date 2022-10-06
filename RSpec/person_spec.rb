@@ -1,6 +1,6 @@
 require_relative '../person'
 describe Person do
-  let(:person) { Person.new(name: 'John', age: 18) }
+  let(:person) { Person.new(20, 'John' ) } 
 
   describe '#new' do
     it 'creates a new person' do
@@ -12,7 +12,7 @@ describe Person do
     end
 
     it 'has an age' do
-      expect(person.age).to eq(18)
+      expect(person.age).to eq(20)
     end
   end
 end

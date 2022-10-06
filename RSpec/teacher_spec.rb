@@ -1,7 +1,7 @@
 require_relative '../teacher'
 
 describe Teacher do
-  let(:teacher) { Teacher.new(name: 'John', age: 18, specialization: 'Math') }
+  let(:teacher) { Teacher.new(30, 'Math', 'John') }
 
   describe '#new' do
     it 'creates a new teacher' do
@@ -13,7 +13,7 @@ describe Teacher do
     end
 
     it 'has an age' do
-      expect(teacher.age).to eq(18)
+      expect(teacher.age).to eq(30)
     end
 
     it 'has a specialization' do
