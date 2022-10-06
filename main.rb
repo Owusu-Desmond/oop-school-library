@@ -1,6 +1,8 @@
 require_relative 'app'
+require_relative 'store/store'
 
 APP = App.new
+STORE = Store.new
 
 class Main
   def menu_message
@@ -13,6 +15,12 @@ class Main
     puts '5 - Create a rental'
     puts '6 - List all rentals for a given person id'
     puts '7 - Exit'
+  end
+
+  def store_data
+    STORE.store_books(APP.books)
+    STORE.store_people(APP.people)
+    STORE.store_rentals(APP.rentals)
   end
 
   def display_menu # rubocop:disable Metrics/CyclomaticComplexity
@@ -32,7 +40,7 @@ class Main
     when 6
       APP.list_rentals_by_person_id
     when 7
-      puts 'Thank you for using this app!'
+      store_data
       exit
     else puts 'Invalid option' end
     display_menu

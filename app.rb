@@ -3,14 +3,44 @@ require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
 require_relative 'classroom'
+require 'json'
+
+class Data
+  attr_accessor :books, :people, :rentals
+
+  def initialize
+    @books = File.open('store/books.json', 'r') do |file|
+      JSON.parse(file.read)
+    end
+    @people = File.open('store/people.json', 'r') do |file|
+      JSON.parse(file.read)
+    end
+    @rentals = File.open('store/rentals.json', 'r') do |file|
+      JSON.parse(file.read)
+    end
+  end
+end
 
 class App
   attr_accessor :rentals, :books, :people, :classrooms
 
   def initialize
-    @rentals = []
-    @books = []
-    @people = []
+    # convert json data to ruby objects
+    @books = Data.new.books.map { |book| Book.new(book['title'], book['author'], book['rentals']) }
+    @people = Data.new.people.map do |peo|
+      if peo.is_a?(Teacher)
+        teacher = Teacher.new(peo['age'], peo['specialization'], peo['name'])
+        teacher.id = peo['id']
+        teacher
+      else
+        student = Student.new(peo['age'], peo['classroom'], peo['name'])
+        student.id = peo['id']
+        student
+      end
+    end
+    @rentals = Data.new.rentals.each_with_index.map do |rental, index|
+      Rental.new(rental['date'], @books[index], @people[index])
+    end
     @classrooms = []
   end
 
